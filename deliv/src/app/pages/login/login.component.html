@@ -1,0 +1,30 @@
+<div class="login-box">
+  <h1>LOGIN</h1>
+  <form>
+    <div class="user-box">
+      <input type="text" name="email" [(ngModel)]="formData.email" required>
+      <label>Email</label>
+    </div>
+    <div class="user-box">
+      <input type="password" name="password" [(ngModel)]="formData.password" required>
+      <label>Password</label>
+    </div>
+
+    <div>
+      <h2>Se connecter en tant que</h2>
+      <select [(ngModel)]="formData.role">
+        <option value="client">Client</option>
+        <option value="deliverer">Livreur</option>
+      </select>
+    </div>
+    <a href="#" (click)="login()">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      CONNEXION
+    </a>
+  </form>
+
+  <div class="error-message" *ngIf="error">{{ error }}</div>
+</div>
