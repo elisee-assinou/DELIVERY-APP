@@ -1,9 +1,12 @@
 <div class="login-box">
-  <h1>LOGIN</h1>
-  <form (ngSubmit)="login()">
+  <h1>REGISTER</h1>
+  <form (ngSubmit)="register()">
     <div class="user-box">
-      <input type="text" name="email" [(ngModel)]="formData.email" required >
-
+      <input type="text" name="username" [(ngModel)]="formData.username" required>
+      <label>Username</label>
+    </div>
+    <div class="user-box">
+      <input type="text" name="email" [(ngModel)]="formData.email" required>
       <label>Email</label>
       <div *ngIf="formData.email && !isEmailValid()">
         L'adresse e-mail n'est pas valide.
@@ -13,13 +16,19 @@
       <input type="password" name="password" [(ngModel)]="formData.password" required>
       <label>Password</label>
     </div>
+    <div class="user-box">
 
+      <select id="role" name="role" [(ngModel)]="formData.role" required>
+        <option value="client">Client</option>
+        <option value="livreur">Livreur</option>
+      </select>
+    </div>
     <button type="submit">
       <span></span>
       <span></span>
       <span></span>
       <span></span>
-      CONNEXION
+      REGISTER
     </button>
   </form>
 

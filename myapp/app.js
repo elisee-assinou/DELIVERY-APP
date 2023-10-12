@@ -10,6 +10,9 @@ mongoose.connect(mongoDBURI, {
   useUnifiedTopology: true,
 });
 
+const cors = require('cors');
+
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -25,6 +28,8 @@ const deliveryRoutes = require('./routes/deliveries.route');
 const setupWebSocket = require('./websocketServer'); // import de notre module websocket
 
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app); // Cration du serveur HTTP
 
 // Configuration de l'application Express
@@ -48,8 +53,7 @@ app.use('/websocket', (req, res, next) => {
   });
 });
 
-const cors = require('cors');
-app.use(cors());
+
 
 // Gestion des erreurs 404 et erreurs
 app.use(function(req, res, next) {

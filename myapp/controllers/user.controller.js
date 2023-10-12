@@ -24,7 +24,7 @@ exports.signup = async (req, res, next) => {
     });
 
     await user.save();
-    res.status(201).json({ message: "User created" });
+    res.status(201).json({ message: "compte cree avec succes" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to create user" });
@@ -37,12 +37,12 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "user not exists" });
     }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      return res.status(401).json({ error: "Authentication failed" });
+      return res.status(401).json({ error: "incorrect password" });
     }
 
     const token = jwt.sign(

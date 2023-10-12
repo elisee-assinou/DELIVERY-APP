@@ -13,6 +13,8 @@ import {MatCardModule} from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
+import { HttpClientModule } from '@angular/common/http';
+import { RegisterComponent } from './pages/register/register.component';
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { MatRadioModule } from '@angular/material/radio';
     AppComponent,
     NotFoundComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { MatRadioModule } from '@angular/material/radio';
     FormsModule,
     MatCardModule,MatInputModule,
     ReactiveFormsModule,
-    MatRadioModule
+    MatRadioModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
