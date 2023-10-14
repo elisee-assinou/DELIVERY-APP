@@ -16,33 +16,45 @@ function setupWebSocket(server) {
           if (data.delivery_id && data.location) {
             // Mise à jour de la localisation dans la base de données
             const delivery = await Delivery.findById(data.delivery_id);
-            
+
             if (delivery) {
               delivery.location = data.location;
               await delivery.save();
 
-              // Envoi d'une confirmation au client
+              //confirmation au client
               const locationConfirmation = {
                 event: 'location_updated',
                 delivery_id: data.delivery_id,
                 location: data.location,
               };
+              console.log("un evenement de type location_changed est venue");
               ws.send(JSON.stringify(locationConfirmation));
             } else {
               throw new Error('Livraison introuvable');
             }
           } else {
-            throw new Error('Paramètres manquants pour la mise à jour de la localisation');
+            throw Error('Paramètres manquants pour la mise à jour de la localisation');
           }
-        } else if (data.event === 'status_changed') {
+        }
+        /*debut de statut_changed*/
+        else if (data.event === 'status_changed') {
           if (data.delivery_id && data.status) {
-            // Mise à jour du statut de la livraison
             const delivery = await Delivery.findById(data.delivery_id);
 
             if (delivery) {
+              // Mise à jour du statut de la livraison
               delivery.status = data.status;
-              await delivery.save();
 
+              if (data.status === 'picked-up') {
+                delivery.pickup_time = new Date();
+              } else if (data.status === 'in-transit') {
+                delivery.start_time = new Date();
+              } else if (data.status === 'delivered' || data.status === 'failed') {
+                delivery.end_time = new Date(); 
+              }
+
+              await delivery.save();
+              console.log(data);
               // Envoi d'une confirmation au client
               const statusConfirmation = {
                 event: 'status_updated',
@@ -56,18 +68,10 @@ function setupWebSocket(server) {
           } else {
             throw new Error('Paramètres manquants pour la mise à jour du statut');
           }
-        } else if (data.event === 'delivery_updated') {
-          if (data.delivery_id) {
-            // Envoi d'une confirmation au client
-            const deliveryConfirmation = {
-              event: 'delivery_updated',
-              delivery_id: data.delivery_id,
-            };
-            ws.send(JSON.stringify(deliveryConfirmation));
-          } else {
-            throw new Error('Paramètres manquants pour la mise à jour de la livraison');
-          }
-        } else {
+        }
+
+        /*fin de statut_changed*/
+        else {
           throw new Error('Événement non géré');
         }
       } catch (error) {

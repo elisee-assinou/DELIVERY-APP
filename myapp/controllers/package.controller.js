@@ -1,4 +1,5 @@
 const Package = require("../models/package");
+const Delivery = require("../models/delivery");
 
 class PackageController {
   async createPackage(req, res) {
@@ -84,24 +85,24 @@ class PackageController {
       res.status(400).json({ message: "Failed to update package", error: err.message });
     }
   }
-  
+
   async deletePackage(req, res) {
     const { package_id } = req.params;
-  
+
     try {
 
       const result = await Package.findOneAndRemove({ _id: package_id });
-  
+
       if (!result) {
         return res.status(404).json({ message: "Package not found" });
       }
-  
+
       res.status(200).json({ message: "Package deleted successfully" });
     } catch (error) {
       return res.status(500).json({ message: "Failed to delete package", error: error.message });
     }
   }
-  
+
 
   async getAllPackages(req, res) {
     try {
@@ -113,20 +114,27 @@ class PackageController {
   }
 
   async getPackageById(req, res) {
-    const { package_id } = req.params;
+    const packageId = req.params.package_id;
 
     try {
-      const package_one = await Package.findById(package_id);
+      const package_one = await Package.findById(packageId).exec();
 
       if (!package_one) {
-        return res.status(404).json({ message: "Package not found" });
+        return res.status(404).json({ message: 'Colis non trouvé' });
       }
 
-      res.status(200).json(package_one);
-    } catch (err) {
-      res.status(400).json({ message: "Failed to fetch package", error: err.message });
+      if (package_one.active_delivery_id) {
+        const delivery = await Delivery.findById(package_one.active_delivery_id).exec();
+
+        return res.status(200).json({ package_one, delivery });
+      } else {
+        return res.status(200).json({ package_one });
+      }
+    } catch (error) {
+      return res.status(500).json({ message: 'Erreur lors de la recherche du colis', error: error.message });
     }
   }
+  
 }
 
 module.exports = PackageController;

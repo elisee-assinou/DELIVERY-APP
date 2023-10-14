@@ -6,7 +6,6 @@ const adminAuth = require("../middleware/admin.middleware"); // Middleware d'aut
 const PackageControllerV = require('../controllers/package.controller');
 const packageController = new PackageControllerV();
 
-// Créer un package
 router.post('/packages',auth, packageController.createPackage);
 
 // Mettre à jour un package par ID
@@ -19,6 +18,6 @@ router.delete('/packages/:package_id',auth,adminAuth, packageController.deletePa
 router.get('/packages',auth,adminAuth, packageController.getAllPackages);
 
 // Récupérer un package par ID
-router.get('/packages/:package_id',auth, packageController.getPackageById);
+router.get('/packages/:package_id', packageController.getPackageById);
 
 module.exports = router;

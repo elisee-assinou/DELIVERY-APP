@@ -15,6 +15,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { HttpClientModule } from '@angular/common/http';
 import { RegisterComponent } from './pages/register/register.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { DeliveryDetailsComponent } from './pages/delivery-details/delivery-details.component';
+import { PackageDetailsComponent } from './pages/package-details/package-details.component';
 
 
 @NgModule({
@@ -23,7 +28,12 @@ import { RegisterComponent } from './pages/register/register.component';
     NotFoundComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    NavbarComponent,
+
+    DeliveryDetailsComponent,
+
+    PackageDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +44,8 @@ import { RegisterComponent } from './pages/register/register.component';
     MatCardModule,MatInputModule,
     ReactiveFormsModule,
     MatRadioModule,
-    HttpClientModule
+    HttpClientModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

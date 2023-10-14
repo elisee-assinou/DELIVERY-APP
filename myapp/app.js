@@ -26,6 +26,7 @@ var usersRouter = require('./routes/users.route');
 const packagesRoutes = require('./routes/packages.route');
 const deliveryRoutes = require('./routes/deliveries.route');
 const setupWebSocket = require('./websocketServer'); // import de notre module websocket
+const sendDeliveryUpdate = require("./socketduClient");
 
 const app = express();
 app.use(cors());

@@ -19,7 +19,7 @@ export class LoginComponent {
   ) { }
 
   login() {
-    
+
     if (!this.formData.email || !this.formData.password) {
       this.error = 'Les champs email et password ne doivent pas être vides.';
       return;
@@ -28,10 +28,22 @@ export class LoginComponent {
     this.sessionLoginService.login(this.formData).subscribe(
       (response: any) => {
 
-        if (response.user && response.token) {
+        if (response.user && response.token && response.user.role=="livreur") {
           console.log("Connexion réussie");
+          console.log(response.user);
+
           localStorage.setItem('token', response.token);
-          this.router.navigate(['/not-found']);
+          this.sessionLoginService.isLoggedIn = true;
+          this.router.navigate(['/driver']);
+        }else{
+          if (response.user && response.token && response.user.role=="clent") {
+            console.log("Connexion réussie");
+            console.log(response.user);
+
+            localStorage.setItem('token', response.token);
+            this.sessionLoginService.isLoggedIn = true;
+            this.router.navigate(['/not-found']);
+          }
         }
       },
       (error) => {

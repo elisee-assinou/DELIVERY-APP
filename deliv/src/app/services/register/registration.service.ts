@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RegistrationService {
-  private apiUrl = 'http://localhost:3000/users'; // URL de l'API
+  private apiUrl = 'http://localhost:3000/users';
 
   constructor(private http: HttpClient) {}
 
   register(formData: { username: string, email: string, password: string, role: string }): Observable<any> {
-    // Envoie une requête POST à l'API pour l'inscription de l'utilisateur
-    return this.http.post(`${this.apiUrl}/register`, formData);
+    return this.http.post(`${this.apiUrl}/signup`, formData);
   }
 }

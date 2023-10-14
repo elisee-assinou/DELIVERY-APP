@@ -19,6 +19,12 @@ export class RegisterComponent {
   ) {}
 
   register() {
+
+    const usernamePattern = /^[a-zA-Z0-9]+$/;
+    if (!usernamePattern.test(this.formData.username)) {
+      this.error = 'Username can only contain letters and numbers.';
+      return;
+    }
     if (!this.formData.username || !this.formData.email || !this.formData.password || !this.formData.role) {
       this.error = 'All fields are required.';
       return;
@@ -26,25 +32,21 @@ export class RegisterComponent {
 
     this.registrationService.register(this.formData).subscribe(
       (response: any) => {
-        if (response.success) {
+        if (response) {
           console.log("Registration successful");
-          // Vous pouvez rediriger l'utilisateur vers la page d'accueil ou une autre page après l'inscription.
-          this.router.navigate(['/home']);
-        } else {
-          this.error = response.message || "Registration failed";
-          console.error("Registration error:", this.error);
+          this.router.navigate(['/login']);
         }
       },
       (error) => {
         this.error = error.error.error;
+        console.log(error.status);
+
         console.error("Registration error:", error.error.error);
       }
     );
   }
 
   isEmailValid(): boolean {
-    // Vous pouvez inclure ici votre validation d'e-mail.
-    // Par exemple, en utilisant une expression régulière comme vous l'avez fait précédemment.
-    return true;
+    return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.formData.email);
   }
 }

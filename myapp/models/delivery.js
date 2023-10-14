@@ -6,6 +6,10 @@ const DeliverySchema = new mongoose.Schema({
     ref: "Package",
     required: true,
   },
+  driver_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", 
+  },
   pickup_time: {
     type: Date,
     required: true,
@@ -28,6 +32,7 @@ const DeliverySchema = new mongoose.Schema({
     enum: ["open", "picked-up", "in-transit", "delivered", "failed"],
     default: "open",
   },
+
 }, {
   timestamps: true,
 });

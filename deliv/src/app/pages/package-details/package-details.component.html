@@ -1,0 +1,38 @@
+<div class="package-details">
+  <!-- Détails du Package -->
+  <div class="package-details-left">
+    <h2>Détails du Package</h2>
+    <div *ngIf="packageDetails">
+      <div class="package-info">
+        <strong>ID du Package:</strong> {{ packageDetails.id }}
+      </div>
+      <div class="package-info">
+        <strong>Description:</strong> {{ packageDetails.description }}
+      </div>
+      <!-- Autres détails du package -->
+    </div>
+    <!-- Gestion des erreurs -->
+    <div *ngIf="packageNotFound">
+      <div class="error-message">{{ packageNotFound }}</div>
+    </div>
+  </div>
+
+  <!-- Détails de la Livraison -->
+  <div class="package-details-left">
+    <h3>Détails de la Livraison</h3>
+    <div *ngIf="packageDetails?.delivery">
+      <div class="delivery-info">
+        <strong>ID de Livraison:</strong> {{ packageDetails.delivery.id }}
+      </div>
+      <div class="delivery-info">
+        <strong>Statut de Livraison:</strong> {{ packageDetails.delivery.status }}
+      </div>
+      <!-- Autres détails de la livraison -->
+    </div>
+  </div>
+
+  <!-- Carte pour afficher la position du livreur à droite -->
+  <div class="package-map-right">
+    <div id="map" #map></div>
+  </div>
+</div>

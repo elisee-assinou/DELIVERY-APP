@@ -18,6 +18,7 @@ router.delete('/deliveries/:delivery_id',auth,adminAuth, deliveryController.dele
 router.get('/deliveries',auth,adminAuth, deliveryController.getAllDeliveries);
 
 // Récupérer une livraison par ID
-router.get('/deliveries/:delivery_id',auth, deliveryController.getDeliveryById);
+router.get('/deliveries/:delivery_id', deliveryController.getDeliveryById);
+router.put("/deliveries/assign/:delivery_id", deliveryController.assignDeliveryToDriver)
 
 module.exports = router;

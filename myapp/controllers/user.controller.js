@@ -46,7 +46,7 @@ exports.login = async (req, res, next) => {
     }
 
     const token = jwt.sign(
-      { userId: user._id, role: user.role, isAdmin: user.isAdmin }, // Ajoutez isAdmin dans le token
+      { userId: user._id, role: user.role, isAdmin: user.isAdmin,email:user.email }, // Ajoutez isAdmin dans le token
       "RANDOM_TOKEN_SECRET",
       { expiresIn: "24h" }
     );

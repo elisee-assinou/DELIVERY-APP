@@ -1,0 +1,37 @@
+
+
+<form (submit)="loadDeliveryDetails($event)">
+  <label for="delivery-id">Delivery ID</label>
+  <input type="text" [(ngModel)]="deliveryIdInput" id="delivery-id" placeholder="Enter Delivery ID"
+    class="form-control" [ngModelOptions]="{ standalone: true }" />
+  <button type="submit" class="btn btn-primary">Load Delivery</button>
+</form>
+<div class="container">
+
+
+  <div class="delivery-details">
+    <div class="det">
+
+      <div class="delivery-info">
+        <h3>Delivery Information</h3>
+        <pre>{{ deliveryDetails | json }}</pre>
+      </div>
+
+      <div class="package-info">
+        <h3>Package Information</h3>
+        <pre>{{ packageDetails | json }}</pre>
+      </div>
+    </div>
+
+    <div id="map" #map class="delivery-map"></div>
+    <div class="det">
+      <button  id="picked-up" (click)="changeStatus('picked-up')" [ngClass]="{'active-button': currentStatus === 'open', 'inactive-button': currentStatus !== 'open'}">PICKED-UP</button>
+      <button  style="background-color: rgb(173, 222, 27); color:black"id="in-transit" (click)="changeStatus('in-transit')" [ngClass]="{'active-button': currentStatus === 'picked-up', 'inactive-button': currentStatus !== 'picked-up'}">In-Transit</button>
+      <button style="background-color: rgb(20, 181, 12); color:black"id="delivered" (click)="changeStatus('delivered')" [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Delivered</button>
+      <button style="background-color: rgb(135, 27, 21); color:black"id="failed" (click)="changeStatus('failed')" [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Failed</button>
+
+
+    </div>
+  </div>
+
+</div>
