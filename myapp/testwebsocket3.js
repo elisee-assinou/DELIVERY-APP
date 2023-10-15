@@ -38,3 +38,148 @@ status_changed (type:incoming, payload:{event, delivery_id, status}, description
 
 
 broadcast (type:delivery_updated, payload:{event, delivery_object}, description:Broadcast when a delivery is updated)
+const mongoose = require("mongoose");
+
+const DeliverySchema = new mongoose.Schema({
+  package_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Package",
+    required: true,
+  },
+  driver_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User", 
+  },
+  pickup_time: {
+    type: Date,
+    required: true,
+  },
+  start_time: {
+    type: Date,
+  },
+  end_time: {
+    type: Date,
+  },
+  location: {
+    type: {
+      lat: Number,
+      lng: Number,
+    },
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ["open", "picked-up", "in-transit", "delivered", "failed"],
+    default: "open",
+  },
+
+}, {
+  timestamps: true,
+});
+
+const Delivery = mongoose.model("Delivery", DeliverySchema);
+
+module.exports = Delivery;
+const mongoose = require("mongoose");
+
+const PackageSchema = new mongoose.Schema({
+  active_delivery_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Delivery",
+    default: null,
+  },
+  description: {
+    type: String,
+  },
+  weight: {
+    type: Number,
+    required: true,
+  },
+  width: {
+    type: Number,
+    required: true,
+  },
+  height: {
+    type: Number,
+    required: true,
+  },
+  depth: {
+    type: Number,
+    required: true,
+  },
+  from_name: {
+    type: String,
+  },
+  from_address: {
+    type: String,
+  },
+  from_location: {
+    type: {
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+  },
+  to_name: {
+    type: String,
+  },
+  to_address: {
+    type: String,
+  },
+  to_location: {
+    type: {
+      lat: { type: Number },
+      lng: { type: Number },
+    },
+  },
+}, {
+  timestamps: true,
+});
+
+const Package = mongoose.model("Package", PackageSchema);
+
+module.exports = Package;
+ voici mes nodeles. je veux creer une page admin en angular qui puisse permettre a l'admin de creer un package, et une livraison au niveau de la livraison, nous devons avoir un  bouton qui permet de selectionner directement l'id du package pour lequel on veut creer la livraison.const express = require('express');
+const router = express.Router();
+const auth = require("../middleware/auth.middleware"); // Middleware d'authentification
+const adminAuth = require("../middleware/admin.middleware"); // Middleware d'autorisation pour les administrateurs
+const DeliveryControllerV2 = require('../controllers/delivery.controller');
+const deliveryController = new DeliveryControllerV2();
+
+// Créer une livraison
+router.post('/deliveries', auth,adminAuth, deliveryController.createDelivery);
+
+// Mettre à jour une livraison par ID
+router.put('/deliveries/:delivery_id',auth,adminAuth, deliveryController.updateDelivery);
+
+// Supprimer une livraison par ID
+router.delete('/deliveries/:delivery_id',auth,adminAuth, deliveryController.deleteDelivery);
+
+// Récupérer toutes les livraisons
+router.get('/deliveries',auth,adminAuth, deliveryController.getAllDeliveries);
+
+// Récupérer une livraison par ID
+router.get('/deliveries/:delivery_id', deliveryController.getDeliveryById);
+router.put("/deliveries/assign/:delivery_id", deliveryController.assignDeliveryToDriver)
+
+module.exports = router;
+const express = require('express');
+const router = express.Router();
+const auth = require("../middleware/auth.middleware"); // Middleware d'authentification
+const adminAuth = require("../middleware/admin.middleware"); // Middleware d'autorisation pour les administrateurs
+
+const PackageControllerV = require('../controllers/package.controller');
+const packageController = new PackageControllerV();
+
+router.post('/packages',auth, packageController.createPackage);
+
+router.put('/packages/:package_id',auth,adminAuth, packageController.updatePackage);
+
+router.delete('/packages/:package_id',auth,adminAuth, packageController.deletePackage);
+
+router.get('/packages',auth,adminAuth, packageController.getAllPackages);
+
+
+router.get('/packages/:package_id', packageController.getPackageById);
+
+module.exports = router;
+ voici les routes disponibles

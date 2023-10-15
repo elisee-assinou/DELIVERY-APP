@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import * as L from 'leaflet';
-import { ActivatedRoute } from '@angular/router';
 import { PackageService } from '../../services/package-service/package-service.service';
 import { WebsocketService } from '../../services/websocket-service/websocket.service';
 
@@ -12,17 +12,16 @@ import { WebsocketService } from '../../services/websocket-service/websocket.ser
 })
 export class PackageDetailsComponent implements OnInit {
   packageForm: FormGroup;
-  packageDetails: any = null;
-  packageNotFound: string = '';
-
-  @ViewChild('map', { static: true }) mapElement!: ElementRef;
-  private map!: L.Map;
-  private marker!: L.Marker;
+  packageId: string | undefined;
+  websocketSubscription: Subscription | undefined;
+  deliveryMarker: L.Marker | undefined;
+  destinationMarker: L.Marker | undefined;
+  map: L.Map | undefined;
+  packageDetails: any;
 
   constructor(
-    private route: ActivatedRoute,
     private packageService: PackageService,
-    private webSocket: WebsocketService,
+    private webSocketService: WebsocketService,
     private formBuilder: FormBuilder
   ) {
     this.packageForm = this.formBuilder.group({
@@ -31,71 +30,69 @@ export class PackageDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const idParam = params['id'];
-
-      if (idParam) {
-        this.packageForm.get('packageId')?.setValue(idParam);
-        this.searchPackageDetails();
-      }
-    });
-  }
-
-  searchPackageDetails() {
-    this.packageNotFound = ''; // Utilisez une chaîne vide pour effacer les messages d'erreur précédents
-
-    if (this.packageForm.invalid) {
-      return;
-    }
-
-    const packageId = this.packageForm.get('packageId')?.value as string;
-
-    this.packageService.getPackageDetails(packageId).subscribe(
-      details => {
-        this.packageDetails = details;
-
-        if (this.packageDetails && this.packageDetails.delivery) {
-          const packageLocation = this.packageDetails.location;
-          const deliveryLocation = this.packageDetails.delivery.location;
-
-          this.setupMap(packageLocation, deliveryLocation);
-
-          //this.webSocket.listen().subscribe(message => {
-            //if (message.event === 'location_changed' && message.delivery_id === this.packageDetails.delivery.id) {
-              //this.updateMarkerPosition(message.location);
-            //}
-          //});
-        }
-      },
-      error => {
-        this.packageNotFound = error.message;
-        this.packageDetails = null; // Réinitialisez packageDetails en cas d'erreur
-        this.destroyMap();
-      }
-    );
-  }
-
-  private setupMap(packageLocation: any, deliveryLocation: any) {
-    this.map = L.map(this.mapElement.nativeElement).setView([packageLocation.lat, packageLocation.lon], 13);
+    this.map = L.map('map');
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19
     }).addTo(this.map);
 
-    this.marker = L.marker([deliveryLocation.lat, deliveryLocation.lon]).addTo(this.map);
+    this.websocketSubscription = this.webSocketService.onMessage().subscribe(async (message: any) => {
+      if (message.event === 'location_changed') {
+        const location = message.location;
+        this.updateDeliveryMarkerPosition(location);
+      }
+    });
+
+    // Affiche la carte initiale
+    this.map.setView([0, 0], 1);
   }
 
-  private updateMarkerPosition(newLocation: any) {
-    this.marker.setLatLng([newLocation.lat, newLocation.lon]);
-  }
+  loadPackageDetails(event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
 
-  private destroyMap() {
-    if (this.map) {
-      this.map.remove();
+    this.packageId = this.packageForm.value.packageId;
+    if (this.packageId) {
+      this.packageService.getPackageDetails(this.packageId).subscribe((packageDetails: any) => {
+        this.packageDetails = packageDetails;
+        console.log(packageDetails);
+
+        const destination = packageDetails.package_one.to_location;
+
+        if (this.isValidCoordinates(destination.lat, destination.lng)) {
+          if (this.destinationMarker) {
+            this.destinationMarker.setLatLng([destination.lat, destination.lng]);
+          } else {
+            this.destinationMarker = L.marker([destination.lat, destination.lng]).addTo(this.map as L.Map);
+          }
+
+          if (this.deliveryMarker) {
+            const location = packageDetails.delivery.location;
+            this.deliveryMarker.setLatLng([location.lat, location.lng]);
+          } else {
+            const location = packageDetails.delivery.location;
+            this.deliveryMarker = L.marker([location.lat, location.lng], {
+              icon: L.icon({
+                iconUrl: '/assets/marker-delivery.png',
+                iconSize: [30, 30]
+              })
+            }).addTo(this.map as L.Map);
+          }
+
+          this.map?.setView([destination.lat, destination.lng], 15);
+        }
+      });
     }
   }
 
-  ngOnDestroy() {
-    this.destroyMap();
+  updateDeliveryMarkerPosition(location: any) {
+    if (this.deliveryMarker) {
+      this.deliveryMarker.setLatLng([location.lat, location.lng]);
+    }
+  }
+
+  isValidCoordinates(lat: number, lng: number): boolean {
+    return (lat >= -90 && lat <= 90) && (lng >= -180 && lng <= 180);
   }
 }

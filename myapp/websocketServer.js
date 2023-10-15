@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Delivery = require('./models/delivery');
 
 function setupWebSocket(server) {
-  const wss = new WebSocket.Server({ noServer: true });
+  const wss = new WebSocket.Server({ server });
 
   wss.on('connection', (ws) => {
     console.log('Nouvelle connexion WebSocket établie');
@@ -23,12 +23,13 @@ function setupWebSocket(server) {
 
               //confirmation au client
               const locationConfirmation = {
-                event: 'location_updated',
+                event: 'location_changed',
                 delivery_id: data.delivery_id,
                 location: data.location,
               };
               console.log("un evenement de type location_changed est venue");
               ws.send(JSON.stringify(locationConfirmation));
+              console.log(JSON.stringify(locationConfirmation));
             } else {
               throw new Error('Livraison introuvable');
             }
@@ -57,7 +58,7 @@ function setupWebSocket(server) {
               console.log(data);
               // Envoi d'une confirmation au client
               const statusConfirmation = {
-                event: 'status_updated',
+                event: 'status_changed',
                 delivery_id: data.delivery_id,
                 status: data.status,
               };
@@ -83,6 +84,7 @@ function setupWebSocket(server) {
         ws.send(JSON.stringify(errorMessage));
       }
     });
+    ws.addEventListener
 
     ws.on('close', () => {
       console.log('Connexion WebSocket fermée');

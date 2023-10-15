@@ -8,7 +8,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 import { DeliveryDetailsComponent } from './pages/delivery-details/delivery-details.component';
 import { PackageDetailsComponent } from './pages/package-details/package-details.component';
-
+import { AdminComponent } from './pages/admin/admin.component';
 
 const routes: Routes = [
   {
@@ -29,8 +29,11 @@ const routes: Routes = [
     "path": 'driver',
     "component": DeliveryDetailsComponent
   },
+  {
+    "path": 'admin',
+    "component": AdminComponent
+  },
 
-  { path: 'package/:id', component: PackageDetailsComponent },
 
   {
     "path": "not-found",
@@ -41,6 +44,7 @@ const routes: Routes = [
     "path": "**",
     redirectTo: "/not-found"
   },
+  { path: 'fdmin', "component": AdminComponent },
 
 
 ];

@@ -118,6 +118,7 @@ export class DeliveryDetailsComponent implements OnInit {
       // Envoyer la position mise à jour au serveur WebSocket
       const positionUpdate = {
         event: 'location_changed',
+        //delivery_id: this.deliveryIdInput,
         delivery_id: this.deliveryIdInput,
         location: {
           lat: lat,

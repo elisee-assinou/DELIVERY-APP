@@ -20,6 +20,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DeliveryDetailsComponent } from './pages/delivery-details/delivery-details.component';
 import { PackageDetailsComponent } from './pages/package-details/package-details.component';
+import { WebsocketService } from './services/websocket-service/websocket.service';
+import { AdminComponent } from './pages/admin/admin.component';
+
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import { PackageDetailsComponent } from './pages/package-details/package-details
 
     DeliveryDetailsComponent,
 
-    PackageDetailsComponent
+    PackageDetailsComponent,
+     AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,7 @@ import { PackageDetailsComponent } from './pages/package-details/package-details
     HttpClientModule,
     MatToolbarModule,
   ],
-  providers: [],
+  providers: [WebsocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

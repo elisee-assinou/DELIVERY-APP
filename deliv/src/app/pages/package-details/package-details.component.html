@@ -1,38 +1,25 @@
-<div class="package-details">
-  <!-- Détails du Package -->
-  <div class="package-details-left">
-    <h2>Détails du Package</h2>
-    <div *ngIf="packageDetails">
-      <div class="package-info">
-        <strong>ID du Package:</strong> {{ packageDetails.id }}
-      </div>
-      <div class="package-info">
-        <strong>Description:</strong> {{ packageDetails.description }}
-      </div>
-      <!-- Autres détails du package -->
+<div class="package-details-container">
+  <h2>Package Details</h2>
+  <form [formGroup]="packageForm" (ngSubmit)="loadPackageDetails()">
+    <div class="form-group">
+      <label for="packageId">Enter Package ID:</label>
+      <input type="text" id="packageId" formControlName="packageId" />
     </div>
-    <!-- Gestion des erreurs -->
-    <div *ngIf="packageNotFound">
-      <div class="error-message">{{ packageNotFound }}</div>
-    </div>
+    <button type="submit">Track Package</button>
+  </form>
+  <div *ngIf="packageDetails" class="package-info">
+    <h3>Package Information</h3>
+    <p><strong>Package ID:</strong> {{ packageDetails.package_one._id }}</p>
+    <p><strong>Description:</strong> {{ packageDetails.package_one.description }}</p>
   </div>
+  <div *ngIf="packageDetails && packageDetails.delivery" class="delivery-info">
+    <h3>Delivery Information</h3>
+    <p><strong>Delivery Status:</strong> {{ packageDetails.delivery.status }}</p>
+    <p><strong>Current Location:</strong> {{ packageDetails.delivery.location }}</p>
 
-  <!-- Détails de la Livraison -->
-  <div class="package-details-left">
-    <h3>Détails de la Livraison</h3>
-    <div *ngIf="packageDetails?.delivery">
-      <div class="delivery-info">
-        <strong>ID de Livraison:</strong> {{ packageDetails.delivery.id }}
-      </div>
-      <div class="delivery-info">
-        <strong>Statut de Livraison:</strong> {{ packageDetails.delivery.status }}
-      </div>
-      <!-- Autres détails de la livraison -->
-    </div>
   </div>
-
-  <!-- Carte pour afficher la position du livreur à droite -->
-  <div class="package-map-right">
+  <div>
+    <h3>Delivery Map</h3>
     <div id="map" #map></div>
   </div>
 </div>

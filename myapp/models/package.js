@@ -39,7 +39,7 @@ const PackageSchema = new mongoose.Schema({
   },
   to_name: {
     type: String,
-  },
+  }, 
   to_address: {
     type: String,
   },

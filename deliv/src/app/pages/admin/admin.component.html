@@ -1,0 +1,114 @@
+<div class="admin-container">
+  <h2>Liste des Packages</h2>
+  <ul class="package-list">
+    <li *ngFor="let package of packages" class="package-item">
+      {{ package.description }}
+    </li>
+  </ul>
+
+  <h2>Liste des Livraisons</h2>
+  <ul class="delivery-list">
+    <li *ngFor="let delivery of deliveries" class="delivery-item">
+      <!-- Afficher les détails de la livraison ici -->
+      {{ delivery.status }}
+    </li>
+  </ul>
+
+  <div class="form-buttons">
+    <button (click)="showPackageFormPanel()">Créer un Package</button>
+    <button (click)="showDeliveryFormPanel()">Créer une Livraison</button>
+  </div>
+
+  /*creation package */
+  <div *ngIf="showPackageForm" class="form-container">
+    <h2>Créer un Nouveau Package</h2>
+    <form [formGroup]="packageForm" (submit)="createPackage()" class="package-form">
+      <label for="weight">Poids (en kg):
+        <input type="number" id="weight" formControlName="weight" />
+      </label>
+
+      <label for="width">Largeur (en cm):
+        <input type="number" id="width" formControlName="width" />
+      </label>
+
+      <label for="height">Hauteur (en cm):
+        <input type="number" id="height" formControlName="height" />
+      </label>
+
+      <label for="depth">Profondeur (en cm):
+        <input type="number" id="depth" formControlName="depth" />
+      </label>
+
+      <label for="from_name">Nom de l'expéditeur:
+        <input type="text" id="from_name" formControlName="from_name" />
+      </label>
+
+      <label for="from_address">Adresse de l'expéditeur:
+        <input type="text" id="from_address" formControlName="from_address" />
+      </label>
+
+      <label for="from_lat">Latitude de l'expéditeur:
+        <input type="number" id="from_lat" formControlName="from_location.lat" />
+      </label>
+
+      <label for="from_lng">Longitude de l'expéditeur:
+        <input type="number" id="from_lng" formControlName="from_location.lng" />
+      </label>
+
+      <label for="to_name">Nom du destinataire:
+        <input type="text" id="to_name" formControlName="to_name" />
+      </label>
+
+      <label for="to_address">Adresse du destinataire:
+        <input type="text" id="to_address" formControlName="to_address" />
+      </label>
+
+      <label for="to_lat">Latitude du destinataire:
+        <input type="number" id="to_lat" formControlName="to_location.lat" />
+      </label>
+
+      <label for="to_lng">Longitude du destinataire:
+        <input type="number" id="to_lng" formControlName="to_location.lng" />
+      </label>
+
+
+      <button type="submit">Créer Package</button>
+    </form>
+  </div>
+
+  /* formulaire de creation delivery */
+  <div *ngIf="showDeliveryForm" class="form-container">
+    <h2>Créer une Nouvelle Livraison</h2>
+    <form [formGroup]="deliveryForm" (submit)="createDelivery()" class="delivery-form">
+      <label for="package_id">ID du Package:</label>
+      <select id="package_id" formControlName="package_id">
+        <option *ngFor="let package of packages" [value]="package._id">{{ package.description }}</option>
+      </select>
+
+      <label for="pickup_time">Heure de ramassage:</label>
+      <input type="datetime-local" id="pickup_time" formControlName="pickup_time" required>
+
+      <div formGroupName="location"> <!-- Utilisation d'un sous-groupe pour location -->
+        <label for="lat">Latitude:</label>
+        <input type="number" id="lat" formControlName="lat" required>
+
+        <label for="lng">Longitude:</label>
+        <input type="number" id="lng" formControlName="lng" required>
+      </div>
+
+      <label for="status">Statut:</label>
+      <select id="status" formControlName="status" required>
+        <option value="open">Open</option>
+        <option value="picked-up">Picked Up</option>
+        <option value="in-transit">In Transit</option>
+        <option value="delivered">Delivered</option>
+        <option value="failed">Failed</option>
+      </select>
+
+      <button type="submit">Créer Livraison</button>
+    </form>
+  </div>
+
+
+
+</div>
