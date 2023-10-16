@@ -41,7 +41,7 @@ export class LoginComponent {
 
               this.router.navigate(['/admin']);
             }else{
-              this.router.navigate(['/client']);
+              this.router.navigate(['/driver']);
             }
 
         }else{
