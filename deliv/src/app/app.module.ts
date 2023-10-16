@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import {MatTableModule} from '@angular/material/table';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +23,9 @@ import { PackageDetailsComponent } from './pages/package-details/package-details
 import { WebsocketService } from './services/websocket-service/websocket.service';
 import { AdminComponent } from './pages/admin/admin.component';
 
+import { MatGridListModule } from '@angular/material/grid-list';
+import {   MatFormFieldModule } from '@angular/material/form-field';
+import { MaterialModule } from './material/material.module';
 
 
 @NgModule({
@@ -50,6 +53,10 @@ import { AdminComponent } from './pages/admin/admin.component';
     MatRadioModule,
     HttpClientModule,
     MatToolbarModule,
+    MatTableModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MaterialModule
   ],
   providers: [WebsocketService],
   bootstrap: [AppComponent]

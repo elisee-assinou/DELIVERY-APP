@@ -7,6 +7,7 @@ export class Delivery {
   end_time?: Date;
   location: { lat: number; lng: number };
   status: 'open' | 'picked-up' | 'in-transit' | 'delivered' | 'failed';
+ 
 
   constructor(
     package_id: string,

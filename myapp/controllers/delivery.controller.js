@@ -3,6 +3,7 @@ const Package = require("../models/package");
 const User = require("../models/user");
 const wss = require("../websocketServer");
 
+
 class DeliveryControllerV2 {
   async createDelivery(req, res) {
 
@@ -75,7 +76,7 @@ class DeliveryControllerV2 {
         };
   
         // Envoyer la mise à jour de localisation à tous les clients WebSocket connectés
-        wss.clients.forEach((client) => {
+       wss.clients.forEach((client) => {
           if (client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(locationUpdate));
           }

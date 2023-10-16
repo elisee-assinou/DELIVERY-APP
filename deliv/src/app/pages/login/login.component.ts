@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { SessionLoginService } from '../../services/session_login/session-login.service';
 import { Router } from '@angular/router';
+import { AdminService } from '../../guards/admin-auth.service';
+
 
 @Component({
   selector: 'app-login',
@@ -14,7 +16,8 @@ export class LoginComponent {
 
   constructor(
     private sessionLoginService: SessionLoginService,
-    private router: Router
+    private router: Router,
+    private adminAuthService: AdminService
 
   ) { }
 
@@ -31,18 +34,31 @@ export class LoginComponent {
         if (response.user && response.token && response.user.role=="livreur") {
           console.log("Connexion réussie");
           console.log(response.user);
+            //verifions de ladmin
+            localStorage.setItem('token', response.token);
+            this.sessionLoginService.isLoggedIn = true;
+            if (response.user.isAdmin==true) {
 
-          localStorage.setItem('token', response.token);
-          this.sessionLoginService.isLoggedIn = true;
-          this.router.navigate(['/driver']);
+              this.router.navigate(['/admin']);
+            }else{
+              this.router.navigate(['/client']);
+            }
+
         }else{
-          if (response.user && response.token && response.user.role=="clent") {
+          if (response.user && response.token && response.user.role=="client") {
             console.log("Connexion réussie");
             console.log(response.user);
 
             localStorage.setItem('token', response.token);
             this.sessionLoginService.isLoggedIn = true;
-            this.router.navigate(['/not-found']);
+            if (response.user.isAdmin==true) {
+
+              this.router.navigate(['/admin']);
+            }else{
+              this.router.navigate(['/client']);
+            }
+
+
           }
         }
       },

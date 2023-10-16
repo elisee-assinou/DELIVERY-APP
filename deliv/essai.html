@@ -82,53 +82,52 @@
         </form>
       </div>
     </div>
-    <div class="col-md-12 mt-3 mb-5" *ngIf="PackagesList">
-      <h2 class="text-center">PACKAGES LIST</h2>
+    <div class="col-md-8 mt-3 mb-5" *ngIf="PackagesList">
+      <h2 class="text-center">PACKAGES LISTS</h2>
       <!-- Tableau pour la liste des packages -->
       <table mat-table [dataSource]="packages" class="mat-elevation-z8 demo-table">
-
+        <!-- Description Column -->
         <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>description</th>
-          <td mat-cell *matCellDef="let package">{{ package.description }}</td>
+          <th mat-header-cell *matHeaderCellDef> Description </th>
+          <td mat-cell *matCellDef="let package"> {{ package.description }} </td>
         </ng-container>
-        <!-- source Column -->
+
+        <!-- Source Column -->
         <ng-container matColumnDef="source">
-          <th mat-header-cell *matHeaderCellDef>source</th>
-          <td mat-cell *matCellDef="let package">{{ package.from_address }}</td>
+          <th mat-header-cell *matHeaderCellDef> Source </th>
+          <td mat-cell *matCellDef="let package"> {{ package.from_address }} </td>
         </ng-container>
 
-        <!-- destination Column -->
+        <!-- Destination Column -->
         <ng-container matColumnDef="destination">
-          <th mat-header-cell *matHeaderCellDef>destination</th>
-          <td mat-cell *matCellDef="let package">{{ package.to_address }}</td>
+          <th mat-header-cell *matHeaderCellDef> Destination </th>
+          <td mat-cell *matCellDef="let package"> {{ package.to_address }} </td>
         </ng-container>
 
-        <!-- weight -->
+        <!-- Weight Column -->
         <ng-container matColumnDef="weight">
-          <th mat-header-cell *matHeaderCellDef>weight</th>
-          <td mat-cell *matCellDef="let package">{{ package.weight }}</td>
+          <th mat-header-cell *matHeaderCellDef> Weight (kg) </th>
+          <td mat-cell *matCellDef="let package"> {{ package.weight }} </td>
         </ng-container>
 
-        <!-- weight -->
+        <!-- Height Column -->
         <ng-container matColumnDef="height">
-          <th mat-header-cell *matHeaderCellDef>height</th>
-          <td mat-cell *matCellDef="let package">{{ package._id }}</td>
+          <th mat-header-cell *matHeaderCellDef> Height (cm) </th>
+          <td mat-cell *matCellDef="let package"> {{ package.height }} </td>
         </ng-container>
-        <!-- weight -->
+
+        <!-- Depth Column -->
         <ng-container matColumnDef="depth">
-          <th mat-header-cell *matHeaderCellDef>depth</th>
-          <td mat-cell *matCellDef="let package">{{ package.depth }}</td>
+          <th mat-header-cell *matHeaderCellDef> Depth (cm) </th>
+          <td mat-cell *matCellDef="let package"> {{ package.depth }} </td>
         </ng-container>
-
-
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let package">
             <button mat-icon-button (click)="editPackage(package)">
               <mat-icon>edit</mat-icon>
-
             </button>
             <button mat-icon-button (click)="deletePackage(package)">
               <mat-icon>delete</mat-icon>
@@ -136,9 +135,8 @@
           </td>
         </ng-container>
 
-        <!-- Table Rows for Deliveries -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
     <div class="col-md-4 d-flex align-items-center justify-content-center" style="height: 50vh;">
@@ -154,7 +152,7 @@
   <!-- Début du row des deliveries -->
   <div class="row mt-3 mb-5">
     <div *ngIf="showDeliveryForm" class="form-container">
-      <div class="col-md-8 ">
+      <div class="col-md-8 mx-auto">
         <h2 class="text-center">Créer une Nouvelle Livraison</h2>
         <!-- Formulaire pour la création de livraison -->
         <form [formGroup]="deliveryForm" (submit)="createDelivery()" class="delivery-form">
@@ -199,8 +197,7 @@
         </form>
       </div>
     </div>
-    <div class="col-md-12 mt-3 mb-5" *ngIf="DeliveriesList">
-
+    <div class="col-md-8 mt-3 mb-5" *ngIf="DeliveriesList">
       <h3>Deliveries</h3>
       <!-- Tableau pour la liste des livraisons -->
       <table mat-table [dataSource]="deliveries" class="mat-elevation-z8 demo-table">
@@ -253,57 +250,6 @@
         <tr mat-row *matRowDef="let row; columns: deliveryColumns"></tr>
       </table>
     </div>
-    <div *ngIf="editingDelivery">
-      <h3>Edit Delivery</h3>
-      <form [formGroup]="EditDeliveryForm">
-        <!-- Status Field (Dropdown) -->
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status">
-            <mat-option value="open">Open</mat-option>
-            <mat-option value="picked-up">picked-Up</mat-option>
-            <mat-option value="in-transit">in-Transit</mat-option>
-            <mat-option value="in-transit">Delivered</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-
-        <!-- Package ID Field -->
-        <mat-form-field>
-          <input matInput formControlName="package_id" placeholder="Package ID">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" class="full-width">
-          <mat-label>Heure de ramassage :</mat-label>
-          <input type="datetime-local" id="pickup_time" formControlName="pickup_time" matInput required>
-        </mat-form-field>
-
-        <div formGroupName="location">
-          <mat-form-field appearance="fill" class="half-width">
-            <mat-label>Latitude :</mat-label>
-            <input type="number" id="lat" formControlName="lat" matInput placeholder="Latitude" required>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="half-width">
-            <mat-label>Longitude :</mat-label>
-            <input type="number" id="lng" formControlName="lng" matInput placeholder="Longitude" required>
-          </mat-form-field>
-        </div>
-
-
-
-
-        <!-- Save and Cancel Buttons -->
-        <!-- Bouton "Save" -->
-
-        <button mat-raised-button color="primary" (click)="saveEditing(currentId)">Save </button>
-
-        <!-- Bouton "Cancel" -->
-        <button mat-raised-button color="warn" (click)="cancelEditing(currentId)">Cancel</button>
-
-      </form>
-    </div>
-
     <div class="col-md-4 d-flex align-items-center justify-content-center" style="height: 50vh;">
       <div class="">
         <button mat-raised-button color="primary" (click)="showDeliveryFormPanel()">
@@ -314,4 +260,3 @@
   </div>
   <!-- Fin du row des deliveries -->
 </div>
-

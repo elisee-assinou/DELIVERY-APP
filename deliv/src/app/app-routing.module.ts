@@ -9,6 +9,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { DeliveryDetailsComponent } from './pages/delivery-details/delivery-details.component';
 import { PackageDetailsComponent } from './pages/package-details/package-details.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { AdminGuard } from './guards/admin.guard';
+import { AdminService } from './services/admin/admin.service';
 
 const routes: Routes = [
   {
@@ -20,6 +22,16 @@ const routes: Routes = [
     "component": LoginComponent
   },
   {
+    "path": 'admin',
+    "component": AdminComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    "path": 'client',
+    "component": PackageDetailsComponent,
+    canActivate: [AuthGuard]
+  },
+  {
     "path": 'register',
     "component": RegisterComponent
   },
@@ -27,24 +39,21 @@ const routes: Routes = [
 
   {
     "path": 'driver',
-    "component": DeliveryDetailsComponent
+    "component": DeliveryDetailsComponent,
+    canActivate: [AuthGuard]
   },
-  {
-    "path": 'admin',
-    "component": AdminComponent
-  },
+
 
 
   {
     "path": "not-found",
     "component": NotFoundComponent,
-    canActivate: [AuthGuard]
   },
   {
     "path": "**",
     redirectTo: "/not-found"
   },
-  { path: 'fdmin', "component": AdminComponent },
+
 
 
 ];

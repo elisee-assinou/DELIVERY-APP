@@ -6,16 +6,16 @@ const DeliveryControllerV2 = require('../controllers/delivery.controller');
 const deliveryController = new DeliveryControllerV2();
 
 // Créer une livraison
-router.post('/deliveries', auth,adminAuth, deliveryController.createDelivery);
+router.post('/deliveries',  deliveryController.createDelivery);
 
 // Mettre à jour une livraison par ID
-router.put('/deliveries/:delivery_id',auth,adminAuth, deliveryController.updateDelivery);
+router.put('/deliveries/:delivery_id', deliveryController.updateDelivery);
 
 // Supprimer une livraison par ID
-router.delete('/deliveries/:delivery_id',auth,adminAuth, deliveryController.deleteDelivery);
+router.delete('/deliveries/:delivery_id', deliveryController.deleteDelivery);
 
 // Récupérer toutes les livraisons
-router.get('/deliveries',auth,adminAuth, deliveryController.getAllDeliveries);
+router.get('/deliveries', deliveryController.getAllDeliveries);
 
 // Récupérer une livraison par ID
 router.get('/deliveries/:delivery_id', deliveryController.getDeliveryById);

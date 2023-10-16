@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AdminService {
-  private apiUrl = 'https://votre-api.com'; // Remplacez par l'URL de votre API
+  private apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -64,5 +64,4 @@ export class AdminService {
     return this.http.delete<any>(url);
   }
 
-  // D'autres méthodes au besoin
 }

@@ -1,0 +1,50 @@
+<div *ngIf="editingDelivery">
+  <h3>Edit Delivery</h3>
+  <form [formGroup]="EditDeliveryForm">
+    <!-- Status Field (Dropdown) -->
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="open">Open</mat-option>
+        <mat-option value="picked-up">picked-Up</mat-option>
+        <mat-option value="in-transit">in-Transit</mat-option>
+        <mat-option value="in-transit">Delivered</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+    <!-- Package ID Field -->
+    <mat-form-field>
+      <input matInput formControlName="package_id" placeholder="Package ID">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Heure de ramassage :</mat-label>
+      <input type="datetime-local" id="pickup_time" formControlName="pickup_time" matInput required>
+    </mat-form-field>
+
+    <div formGroupName="location">
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Latitude :</mat-label>
+        <input type="number" id="lat" formControlName="lat" matInput placeholder="Latitude" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="half-width">
+        <mat-label>Longitude :</mat-label>
+        <input type="number" id="lng" formControlName="lng" matInput placeholder="Longitude" required>
+      </mat-form-field>
+    </div>
+
+
+
+
+    <!-- Save and Cancel Buttons -->
+    <!-- Bouton "Save" -->
+
+    <button mat-raised-button color="primary" (click)="saveEditing(currentId)">Save </button>
+
+    <!-- Bouton "Cancel" -->
+    <button mat-raised-button color="warn" (click)="cancelEditing(currentId)">Cancel</button>
+
+  </form>
+</div>

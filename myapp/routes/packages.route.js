@@ -6,13 +6,13 @@ const adminAuth = require("../middleware/admin.middleware"); // Middleware d'aut
 const PackageControllerV = require('../controllers/package.controller');
 const packageController = new PackageControllerV();
 
-router.post('/packages',auth, packageController.createPackage);
+router.post('/packages', packageController.createPackage);
 
 router.put('/packages/:package_id',auth,adminAuth, packageController.updatePackage);
 
 router.delete('/packages/:package_id',auth,adminAuth, packageController.deletePackage);
 
-router.get('/packages',auth,adminAuth, packageController.getAllPackages);
+router.get('/packages', packageController.getAllPackages);
 
 
 router.get('/packages/:package_id', packageController.getPackageById);
