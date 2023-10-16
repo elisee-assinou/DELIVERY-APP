@@ -1,45 +1,37 @@
+
+
 <form (submit)="loadDeliveryDetails($event)">
-  <div class="flex flex-col">
-    <label for="delivery-id" class="mb-2">Delivery ID</label>
-    <input type="text" [(ngModel)]="deliveryIdInput" id="delivery-id" placeholder="Enter Delivery ID"
-      class="form-control w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500" [ngModelOptions]="{ standalone: true }" />
-  </div>
-
-  <button type="submit" class="mt-4 btn btn-primary">Load Delivery</button>
+  <label for="delivery-id">Delivery ID</label>
+  <input type="text" [(ngModel)]="deliveryIdInput" id="delivery-id" placeholder="Enter Delivery ID"
+    class="form-control" [ngModelOptions]="{ standalone: true }" />
+  <button type="submit" class="btn btn-primary">Load Delivery</button>
 </form>
-
 <div class="container">
+
+
   <div class="delivery-details">
     <div class="det">
+
       <div class="delivery-info">
-        <h3 class="mb-2 text-xl font-semibold">Delivery Information</h3>
+        <h3>Delivery Information</h3>
         <pre>{{ deliveryDetails | json }}</pre>
       </div>
 
       <div class="package-info">
-        <h3 class="mb-2 text-xl font-semibold">Package Information</h3>
+        <h3>Package Information</h3>
         <pre>{{ packageDetails | json }}</pre>
       </div>
     </div>
 
     <div id="map" #map class="delivery-map"></div>
-
     <div class="det">
-      <button id="picked-up" (click)="changeStatus('picked-up')"
-        class="btn btn-primary w-full py-2 text-center rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:bg-indigo-600"
-        [ngClass]="{'active-button': currentStatus === 'open', 'inactive-button': currentStatus !== 'open'}">PICKED-UP</button>
+      <button  id="picked-up" (click)="changeStatus('picked-up')" [ngClass]="{'active-button': currentStatus === 'open', 'inactive-button': currentStatus !== 'open'}">PICKED-UP</button>
+      <button  style="background-color: rgb(173, 222, 27); color:black"id="in-transit" (click)="changeStatus('in-transit')" [ngClass]="{'active-button': currentStatus === 'picked-up', 'inactive-button': currentStatus !== 'picked-up'}">In-Transit</button>
+      <button style="background-color: rgb(20, 181, 12); color:black"id="delivered" (click)="changeStatus('delivered')" [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Delivered</button>
+      <button style="background-color: rgb(135, 27, 21); color:black"id="failed" (click)="changeStatus('failed')" [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Failed</button>
 
-      <button id="in-transit" (click)="changeStatus('in-transit')"
-        class="btn btn-info w-full py-2 text-center rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:bg-indigo-600"
-        [ngClass]="{'active-button': currentStatus === 'picked-up', 'inactive-button': currentStatus !== 'picked-up'}">In-Transit</button>
 
-      <button id="delivered" (click)="changeStatus('delivered')"
-        class="btn btn-success w-full py-2 text-center rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:bg-indigo-600"
-        [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Delivered</button>
-
-      <button id="failed" (click)="changeStatus('failed')"
-        class="btn btn-danger w-full py-2 text-center rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 active:bg-indigo-600"
-        [ngClass]="{'active-button': currentStatus === 'in-transit', 'inactive-button': currentStatus !== 'in-transit'}">Failed</button>
     </div>
   </div>
+
 </div>
