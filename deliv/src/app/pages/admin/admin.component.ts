@@ -106,9 +106,13 @@ export class AdminComponent implements OnInit {
     if (this.packageForm.valid) {
       const newPackage = this.packageForm.value;
       this.adminService.createPackage(newPackage).subscribe(() => {
+        alert(" succes " );
         // Réinitialisez le formulaire et rechargez la liste des packages
         this.packageForm.reset();
         this.getPackages();
+      },
+      (error) => {
+        alert("Échec");
       });
     }
   }
@@ -117,9 +121,13 @@ export class AdminComponent implements OnInit {
     if (this.deliveryForm.valid) {
       const newDelivery = this.deliveryForm.value;
       this.adminService.createDelivery(newDelivery).subscribe(() => {
+        alert(" succes " );
         // Réinitialisation et  rechargement
         this.deliveryForm.reset();
         this.getDeliveries();
+      },
+      (error) => {
+        alert("Échec");
       });
     }
   }
