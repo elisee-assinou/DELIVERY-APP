@@ -1,25 +1,32 @@
-<div class="package-details-container">
-  <h2>Package Details</h2>
-  <form [formGroup]="packageForm" (ngSubmit)="loadPackageDetails()">
-    <div class="form-group">
-      <label for="packageId">Enter Package ID:</label>
-      <input type="text" id="packageId" formControlName="packageId" />
-    </div>
-    <button type="submit">Track Package</button>
-  </form>
-  <div *ngIf="packageDetails" class="package-info">
-    <h3>Package Information</h3>
-    <p><strong>Package ID:</strong> {{ packageDetails.package_one._id }}</p>
-    <p><strong>Description:</strong> {{ packageDetails.package_one.description }}</p>
+<div class="container">
+  <div class="  row ">
+    <form [formGroup]="packageForm" (ngSubmit)="loadPackageDetails()">
+      <div class="form-group">
+        <label for="packageId" class="form-label">Enter Package ID:</label>
+        <input type="text" id="packageId" formControlName="packageId" class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary mb-3">Track Package</button>
+    </form>
   </div>
-  <div *ngIf="packageDetails && packageDetails.delivery" class="delivery-info">
-    <h3>Delivery Information</h3>
-    <p><strong>Delivery Status:</strong> {{ packageDetails.delivery.status }}</p>
-    <p><strong>Current Location:</strong> {{ packageDetails.delivery.location }}</p>
 
-  </div>
-  <div>
-    <h3>Delivery Map</h3>
-    <div id="map" #map></div>
+  <div class="row container ">
+    <div class=" col-md-4">
+      <h2>Package Details</h2>
+
+      <div *ngIf="packageDetails" class="">
+        <h3>Package Information</h3>
+        <p><strong>Package ID:</strong> {{ packageDetails.package_one._id }}</p>
+        <p><strong>Description:</strong> {{ packageDetails.package_one.description }}</p>
+      </div>
+      <div *ngIf="packageDetails && packageDetails.delivery" class="delivery-info">
+        <h3>Delivery Information</h3>
+        <p><strong>Delivery Status:</strong> {{ packageDetails.delivery.status }}</p>
+        <p><strong>Current Location:</strong> {{ packageDetails.delivery.location }}</p>
+
+      </div>
+    </div>
+
+    <div id="map" #map class="col-md-8"></div>
+
   </div>
 </div>

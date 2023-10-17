@@ -37,9 +37,10 @@ export class PackageDetailsComponent implements OnInit {
     }).addTo(this.map);
 
     this.websocketSubscription = this.webSocketService.onMessage().subscribe(async (message: any) => {
-      console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
 
       if (message.event === 'location_changed') {
+        console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
         const location = message.location;
         this.updateDeliveryMarkerPosition(location);
       }
@@ -91,6 +92,8 @@ export class PackageDetailsComponent implements OnInit {
   updateDeliveryMarkerPosition(location: any) {
     if (this.deliveryMarker) {
       this.deliveryMarker.setLatLng([location.lat, location.lng]);
+      console.log("la nouvelle position du livreur a ete mise a jour");
+
     }
   }
 

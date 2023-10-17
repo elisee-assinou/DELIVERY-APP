@@ -4,11 +4,15 @@ const Delivery = require('./models/delivery');
 
 function setupWebSocket(server) {
   const wss = new WebSocket.Server({ server });
+  const clients=new Set();
 
   wss.on('connection', (ws) => {
     console.log('Nouvelle connexion WebSocket établie');
+    clients.add(ws);
+    console.log(clients.size);
 
     ws.on('message', async (message) => {
+      
       try {
         const data = JSON.parse(message);
 
@@ -27,8 +31,20 @@ function setupWebSocket(server) {
                 delivery_id: data.delivery_id,
                 location: data.location,
               };
+
+              if (wss && wss.clients) {
+                console.log(wss.clients.values());
+                // Vous pouvez accéder à wss.clients ici en toute sécurité.
+                wss.clients.forEach((client) => {
+                  if (client.readyState === WebSocket.OPEN) {
+                    client.send(JSON.stringify(locationUpdadte));
+                  }
+                });
+              } else {
+                console.error("La propriété 'wss' ou 'wss.clients' est indéfinie ou non valide.");
+              }
               console.log("un evenement de type location_changed est venue");
-              ws.send(JSON.stringify(locationConfirmation));
+              
               console.log(JSON.stringify(locationConfirmation));
             } else {
               throw new Error('Livraison introuvable');
@@ -63,6 +79,11 @@ function setupWebSocket(server) {
                 status: data.status,
               };
               ws.send(JSON.stringify(statusConfirmation));
+
+              
+
+
+
             } else {
               throw new Error('Livraison introuvable');
             }
@@ -84,10 +105,11 @@ function setupWebSocket(server) {
         ws.send(JSON.stringify(errorMessage));
       }
     });
-    ws.addEventListener
+   
 
     ws.on('close', () => {
       console.log('Connexion WebSocket fermée');
+      clients.delete(ws);
     });
   });
 

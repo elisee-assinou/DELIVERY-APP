@@ -60,7 +60,7 @@ export class DeliveryDetailsComponent implements OnInit {
 
   setupMap(destination: any) {
     if (!this.map) {
-      this.map = L.map('map').setView([9.3077, 2.3158], 15);
+      this.map = L.map('map').setView([9.3077, 2.3158], 7);
 
       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

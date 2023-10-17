@@ -77,16 +77,7 @@ class DeliveryControllerV2 {
         };
         console.log(wss);
         // Envoyer la mise à jour de localisation à tous les clients WebSocket connectés
-        if (wss && wss.clients) {
-          // Vous pouvez accéder à wss.clients ici en toute sécurité.
-          wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(locationUpdate));
-            }
-          });
-        } else {
-          console.error("La propriété 'wss' ou 'wss.clients' est indéfinie ou non valide.");
-        }
+        
 
       }
 
@@ -102,8 +93,10 @@ class DeliveryControllerV2 {
 
         // Envoyer la mise à jour du statut à tous les clients WebSocket connectés
         if (wss && wss.clients) {
+          
           // Vous pouvez accéder à wss.clients ici en toute sécurité.
           wss.clients.forEach((client) => {
+            
             if (client.readyState === WebSocket.OPEN) {
               client.send(JSON.stringify(statusUpdate));
             }
