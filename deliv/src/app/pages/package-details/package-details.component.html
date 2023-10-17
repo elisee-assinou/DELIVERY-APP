@@ -13,17 +13,28 @@
     <div class=" col-md-4">
       <h2>Package Details</h2>
 
-      <div *ngIf="packageDetails" class="">
-        <h3>Package Information</h3>
-        <p><strong>Package ID:</strong> {{ packageDetails.package_one._id }}</p>
-        <p><strong>Description:</strong> {{ packageDetails.package_one.description }}</p>
-      </div>
-      <div *ngIf="packageDetails && packageDetails.delivery" class="delivery-info">
-        <h3>Delivery Information</h3>
-        <p><strong>Delivery Status:</strong> {{ packageDetails.delivery.status }}</p>
-        <p><strong>Current Location:</strong> {{ packageDetails.delivery.location }}</p>
+      <mat-card *ngIf="packageDetails">
+        <mat-card-header>
+          <mat-card-title>Package Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Package ID:</strong> {{ packageDetails.package_one._id }}</p>
+          <p><strong>Description:</strong> {{ packageDetails.package_one.description }}</p>
+        </mat-card-content>
+      </mat-card>
 
-      </div>
+      <mat-card *ngIf="packageDetails && packageDetails.delivery">
+        <mat-card-header>
+          <mat-card-title>Delivery Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Delivery Status:</strong> {{ packageDetails.delivery.status }}</p>
+          <p><strong>Current Latitude:</strong> {{ packageDetails.delivery.location.lat }}</p>
+          <p><strong>Current Longitude:</strong> {{ packageDetails.delivery.location.lng }}</p>
+        </mat-card-content>
+      </mat-card>
+
+
     </div>
 
     <div id="map" #map class="col-md-8"></div>

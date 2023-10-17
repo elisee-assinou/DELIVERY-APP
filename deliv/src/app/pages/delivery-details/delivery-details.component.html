@@ -1,5 +1,5 @@
-<div class="row ">
-  <div class="row">
+<div class="row">
+  <div class="row ">
     <div class="col-md-12">
       <form (submit)="loadDeliveryDetails($event)">
         <label for="delivery-id">Delivery ID</label>
@@ -11,18 +11,32 @@
   </div>
   <div class="row">
     <div class="col-md-3">
-      <div class="package-info">
-        <h3>Delivery Information</h3>
-        <pre>{{ deliveryDetails | json }}</pre>
-      </div>
-      <div class="package-info">
-        <h3>Package Information</h3>
-        <pre>{{ packageDetails | json }}</pre>
-      </div>
+      <mat-card *ngIf="packageDetails">
+        <mat-card-header>
+          <mat-card-title>Package Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Package ID:</strong> {{ packageDetails._id }}</p>
+          <p><strong>Description:</strong> {{ packageDetails.description }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card *ngIf="packageDetails && deliveryDetails">
+        <mat-card-header>
+          <mat-card-title>Delivery Information</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Delivery Status:</strong> {{ deliveryDetails.status }}</p>
+          <p><strong>Current Latitude:</strong> {{ deliveryDetails.location.lat }}</p>
+          <p><strong>Current Longitude:</strong> {{ deliveryDetails.location.lng }}</p>
+        </mat-card-content>
+      </mat-card>
+
+
     </div>
     <div id="map" #map class=" col-md-6"></div>
     <div class="det col-md-3">
-      <button id="picked-up" (click)="changeStatus('picked-up')"
+      <button style="background-color: rgb(25, 43, 207); color:black" id="picked-up" (click)="changeStatus('picked-up')"
         [ngClass]="{'active-button': currentStatus === 'open', 'inactive-button': currentStatus !== 'open'}">PICKED-UP</button>
       <button style="background-color: rgb(173, 222, 27); color:black" id="in-transit"
         (click)="changeStatus('in-transit')"
