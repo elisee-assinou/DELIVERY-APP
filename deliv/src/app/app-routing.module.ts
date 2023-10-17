@@ -15,7 +15,7 @@ import { AdminService } from './services/admin/admin.service';
 const routes: Routes = [
   {
     "path": '',
-    "component": HomeComponent
+    "component": LoginComponent
   },
   {
     "path": 'login',

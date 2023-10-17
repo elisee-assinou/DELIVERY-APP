@@ -37,6 +37,8 @@ export class PackageDetailsComponent implements OnInit {
     }).addTo(this.map);
 
     this.websocketSubscription = this.webSocketService.onMessage().subscribe(async (message: any) => {
+      console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+
       if (message.event === 'location_changed') {
         const location = message.location;
         this.updateDeliveryMarkerPosition(location);
