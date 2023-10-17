@@ -4,11 +4,8 @@ const User = require("../models/user");
 const WebSocket = require('ws');
 const wss = require("../websocketServer");
 
-
 class DeliveryControllerV2 {
   async createDelivery(req, res) {
-
-
     const {
       package_id,
       pickup_time,
@@ -18,32 +15,33 @@ class DeliveryControllerV2 {
       status,
     } = req.body;
 
-    // Vérifier que le colis existe
-    const package_one = await Package.findById(package_id);
+    try {
+      // Vérifier que le colis existe
+      const package_one = await Package.findById(package_id);
+      if (!package_one) {
+        return res.status(404).json({ message: "Package not found" });
+      }
 
-    if (!package_one) {
-      return res.status(404).json({ message: "Package not found" });
+      const newDelivery = new Delivery({
+        package_id,
+        pickup_time,
+        start_time,
+        end_time,
+        location,
+        status,
+      });
+
+      await newDelivery.save();
+
+      res.status(201).json({ message: "Delivery created successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: "Failed to create delivery", error: error.message });
     }
-
-    const newDelivery = new Delivery({
-
-      package_id,
-      pickup_time,
-      start_time,
-      end_time,
-      location,
-      status,
-    });
-
-    await newDelivery.save();
-
-    res.status(201).json({ message: "Delivery created successfully" });
   }
-
 
   async updateDelivery(req, res) {
     const { delivery_id } = req.params;
-    const { pickup_time, location, status } = req.body;
+    const { pickup_time, location, status, type } = req.body;
 
     try {
       const delivery = await Delivery.findById(delivery_id);
@@ -69,49 +67,38 @@ class DeliveryControllerV2 {
           }
         }
 
-        // Notification aux clients WebSocket connectés pour la mise à jour de la localisation
+        // Envoi d'une confirmation au client
         const locationUpdate = {
+          type: type || 'incoming',
           event: 'location_changed',
           delivery_id: delivery_id,
           location: location,
         };
-        console.log(wss);
-        // Envoyer la mise à jour de localisation à tous les clients WebSocket connectés
-        
 
+        // Envoyer la mise à jour de localisation au serveur WebSocket
+        ws.send(JSON.stringify(locationUpdate));
       }
 
       if (status) {
         delivery.status = status;
 
-        // Notification aux clients WebSocket connectés pour la mise à jour du statut
+        // Envoi d'une confirmation au client
         const statusUpdate = {
+          type: type || 'incoming',
           event: 'status_changed',
           delivery_id: delivery_id,
           status: status,
         };
 
-        // Envoyer la mise à jour du statut à tous les clients WebSocket connectés
-        if (wss && wss.clients) {
-          
-          // Vous pouvez accéder à wss.clients ici en toute sécurité.
-          wss.clients.forEach((client) => {
-            
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(JSON.stringify(statusUpdate));
-            }
-          });
-        } else {
-          console.error("La propriété 'wss' ou 'wss.clients' est indéfinie ou non valide.");
-        }
-
+        // Envoyer la mise à jour du statut au serveur WebSocket
+        ws.send(JSON.stringify(statusUpdate));
       }
 
       await delivery.save();
 
       res.status(200).json({ message: 'Delivery updated successfully' });
-    } catch (err) {
-      return res.status(400).json({ message: 'Failed to update delivery', error: err.message });
+    } catch (error) {
+      return res.status(500).json({ message: 'Failed to update delivery', error: error.message });
     }
   }
 

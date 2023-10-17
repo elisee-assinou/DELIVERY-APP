@@ -37,10 +37,9 @@ export class PackageDetailsComponent implements OnInit {
     }).addTo(this.map);
 
     this.websocketSubscription = this.webSocketService.onMessage().subscribe(async (message: any) => {
+      console.log('edjan');
 
-
-      if (message.event === 'location_changed') {
-        console.log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv");
+      if (message.type === 'incoming' && message.event === 'location_changed') {
         const location = message.location;
         this.updateDeliveryMarkerPosition(location);
       }
@@ -59,8 +58,6 @@ export class PackageDetailsComponent implements OnInit {
     if (this.packageId) {
       this.packageService.getPackageDetails(this.packageId).subscribe((packageDetails: any) => {
         this.packageDetails = packageDetails;
-        console.log(packageDetails);
-
         const destination = packageDetails.package_one.to_location;
 
         if (this.isValidCoordinates(destination.lat, destination.lng)) {
@@ -92,8 +89,7 @@ export class PackageDetailsComponent implements OnInit {
   updateDeliveryMarkerPosition(location: any) {
     if (this.deliveryMarker) {
       this.deliveryMarker.setLatLng([location.lat, location.lng]);
-      console.log("la nouvelle position du livreur a ete mise a jour");
-
+      console.log("La nouvelle position du livreur a été mise à jour");
     }
   }
 
