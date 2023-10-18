@@ -44,6 +44,10 @@ export class WebsocketService {
   }
 
   public onMessage(): Observable<string> {
+    console.log("jai ete apele");
+    console.log(this.messageSubject);
+
+
     return this.messageSubject.asObservable();
   }
 
