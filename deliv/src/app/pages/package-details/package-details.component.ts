@@ -44,8 +44,7 @@ export class PackageDetailsComponent implements OnInit {
         this.updateDeliveryMarkerPosition(location);
       }
     });
-
-    // Affiche la carte initiale
+    
     this.map.setView([0, 0], 1);
   }
 

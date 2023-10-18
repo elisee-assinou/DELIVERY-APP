@@ -235,14 +235,12 @@ export class AdminComponent implements OnInit {
     }
 
     cancelEditing(deliveryId: string) {
-      // Recherchez la livraison à modifier en fonction de deliveryId
+      
       const delivery = this.deliveries.find((d) => d._id === deliveryId);
 
       if (delivery) {
-        // Réinitialisez le formulaire de modification
+        // formulaire de modification reinitialise
         this.EditDeliveryForm.reset();
-
-        // Désactivez le mode d'édition pour cette livraison
         delivery.isEditing = false;
       }
     }

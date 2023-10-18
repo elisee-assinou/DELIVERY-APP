@@ -71,7 +71,7 @@ export class DeliveryDetailsComponent implements OnInit {
         destinationMarker.addTo(this.map);
       }
 
-      // Mettre à jour la position du marqueur actuelle
+      // mis a jour la position du marqueur actuelle
       this.updateMarkerPosition();
     }
   }
@@ -99,10 +99,9 @@ export class DeliveryDetailsComponent implements OnInit {
         this.currentLocationMarker.setLatLng([lat, lng]);
       }
 
-      // Envoyer la position mise à jour au serveur WebSocket
       const positionUpdate = {
         event: 'location_changed',
-        type: 'incoming', // ou 'broadcast' en fonction de l'événement que vous envoyez
+        type: 'incoming',
         delivery_id: this.deliveryIdInput,
         location: {
           lat: lat,
@@ -154,7 +153,7 @@ export class DeliveryDetailsComponent implements OnInit {
   sendStatusUpdate(newStatus: string) {
     const deliveryStatusUpdate = {
       event: 'status_changed',
-      type: 'incoming', // ou 'broadcast' en fonction de l'événement que vous envoyez
+      type: 'incoming',
       delivery_id: this.deliveryIdInput,
       status: newStatus,
     };
