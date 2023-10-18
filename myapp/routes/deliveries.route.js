@@ -8,16 +8,12 @@ const deliveryController = new DeliveryControllerV2();
 // Créer une livraison
 router.post('/deliveries',  deliveryController.createDelivery);
 
-// Mettre à jour une livraison par ID
 router.put('/deliveries/:delivery_id', deliveryController.updateDelivery);
 
-// Supprimer une livraison par ID
 router.delete('/deliveries/:delivery_id', deliveryController.deleteDelivery);
 
-// Récupérer toutes les livraisons
 router.get('/deliveries', deliveryController.getAllDeliveries);
 
-// Récupérer une livraison par ID
 router.get('/deliveries/:delivery_id', deliveryController.getDeliveryById);
 router.put("/deliveries/assign/:delivery_id", deliveryController.assignDeliveryToDriver)
 
